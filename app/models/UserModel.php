@@ -169,10 +169,6 @@
 				$this->addError("Unable to update user");
 				return false;
 			}
-
-			$this->address = model('AddressModel');
-			$this->address->update($user_data , $user_data['address_id']);
-
 			$this->addMessage("User {$user_data['first_name']} has been updated!");
 
 			return true;

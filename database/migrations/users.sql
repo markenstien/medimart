@@ -17,4 +17,6 @@ CREATE TABLE `users` (
 
 
 alter table users 
-  add column created_at timestamp DEFAULT now()
+  add column created_at timestamp DEFAULT now();
+
+alter table users add column profile text;
