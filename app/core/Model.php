@@ -111,10 +111,9 @@
 		public function all($where = null , $order_by = null , $limit = null)
 		{
 
-			if(!is_null($where))
-			{
+			if(!is_null($where)){
 				if(is_array($where)) {
-					$where = $this->conditionEqual($where);
+					$where = $this->conditionConvert($where);
 				}
 			}
 
@@ -133,8 +132,8 @@
 		{	
 			$whereString = null;
 
-			if( !is_null($where) )
-				$whereString = $this->conditionEqual($where);
+			if(!is_null($where))
+				$whereString = $this->conditionConvert($where);
 
 			$data = [
 				$this->table ,
@@ -149,7 +148,7 @@
 		public function getAssoc($field , $where = null)
 	    {
 			if(is_array($where))
-			$where = $this->conditionEqual($where);
+			$where = $this->conditionConvert($where);
 
 			$data = [
 				$this->table,
@@ -164,7 +163,7 @@
 	    public function getDesc($field , $where = null)
 	    {
 		  if(is_array($where))
-			$where = $this->conditionEqual($where);
+			$where = $this->conditionConvert($where);
 
 	      $data = [
 	        $this->table,

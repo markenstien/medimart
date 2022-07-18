@@ -3,8 +3,9 @@
 	namespace Form;
 
 	load(['Form'], CORE);
-
+	load(['UserService'],SERVICES);
 	use Core\Form;
+	use Services\UserService;
 
 	class UserForm extends Form
 	{
@@ -16,27 +17,20 @@
 			$this->name = $name ?? 'form_user';
 
 			$this->initCreate();
-
 			/*personal details*/
 			$this->addFirstName();
 			$this->addLastName();
-			$this->addMiddleName();
-			$this->addBirthDay();
 			$this->addGender();
 			/*end*/
 			$this->addPhoneNumber();
-			$this->addEmal();
-
+			$this->addEmail();
 			$this->addAddress();
-			
-			// $this->addUsername();
+
+			$this->addUsername();
 			$this->addPassword();
 			$this->addUserType();
-			$this->addLicenseNumber();
 			$this->addProfile();
 			
-			
-
 			$this->addSubmit('');
 		}
 
@@ -52,7 +46,7 @@
 		{
 			$this->add([
 				'type' => 'text',
-				'name' => 'first_name',
+				'name' => 'firstname',
 				'class' => 'form-control',
 				'required' => true,
 				'options' => [
@@ -60,8 +54,8 @@
 				],
 
 				'attributes' => [
-					'id' => 'id_first_name',
-					'placeholder' => 'Enter Last Name'
+					'id' => 'firstname',
+					'placeholder' => 'Enter First Name'
 				]
 			]);
 		}
@@ -71,7 +65,7 @@
 		{
 			$this->add([
 				'type' => 'text',
-				'name' => 'last_name',
+				'name' => 'lastname',
 				'class' => 'form-control',
 				'required' => true,
 				'options' => [
@@ -79,41 +73,8 @@
 				],
 
 				'attributes' => [
-					'id' => 'id_lastname',
+					'id' => 'lastname',
 					'placeholder' => 'Enter Last Name'
-				]
-			]);
-		}
-
-		public function addMiddleName()
-		{
-			$this->add([
-				'type' => 'text',
-				'name' => 'middle_name',
-				'class' => 'form-control',
-				'options' => [
-					'label' => 'Middle Name'
-				],
-
-				'attributes' => [
-					'id' => 'id_middle_name',
-					'placeholder' => 'Enter Middle Name'
-				]
-			]);
-		}
-
-		public function addBirthDay()
-		{
-			$this->add([
-				'type' => 'date',
-				'name' => 'birthdate',
-				'class' => 'form-control',
-				'options' => [
-					'label' => 'Birth Day'
-				],
-
-				'attributes' => [
-					'id' => 'id_birthday',
 				]
 			]);
 		}
@@ -132,7 +93,7 @@
 				],
 
 				'attributes' => [
-					'id' => 'id_gender',
+					'id' => 'gender',
 				]
 			]);
 		}
@@ -148,7 +109,7 @@
 				],
 
 				'attributes' => [
-					'id' => 'id_address',
+					'id' => 'address',
 					'rows' => 3
 				]
 			]);
@@ -158,20 +119,20 @@
 		{
 			$this->add([
 				'type' => 'text',
-				'name' => 'phone_number',
+				'name' => 'phone',
 				'class' => 'form-control',
 				'options' => [
 					'label' => 'Phone Number',
 				],
 
 				'attributes' => [
-					'id' => 'id_phone_number',
+					'id' => 'phone',
 					'placeholder' => 'Eg. 09xxxxxxxxx'
 				]
 			]);
 		}
 
-		public function addEmal()
+		public function addEmail()
 		{
 			$this->add([
 				'type' => 'email',
@@ -182,7 +143,7 @@
 				],
 
 				'attributes' => [
-					'id' => 'id_email',
+					'id' => 'email',
 					'placeholder' => 'Enter Valid Email'
 				]
 			]);
@@ -200,7 +161,8 @@
 				],
 
 				'attributes' => [
-					'id' => 'id_username'
+					'id' => 'username',
+					'placeholder' => 'Enter Username'
 				]
 			]);
 		}
@@ -217,7 +179,7 @@
 				],
 
 				'attributes' => [
-					'id' => 'id_password'
+					'id' => 'password'
 				]
 			]);
 		}
@@ -232,27 +194,12 @@
 				'options' => [
 					'label' => 'User Type',
 					'option_values' => [
-						'medical personel' , 'doctor' , 'patient'
+						UserService::SUPERVISOR,
+						UserService::STAFF
 					]
 				],
-
 				'attributes' => [
-					'id' => 'id_user_type'
-				]
-			]);
-		}
-		public function addLicenseNumber()
-		{
-			$this->add([
-				'type' => 'text',
-				'name' => 'license_number',
-				'class' => 'form-control',
-				'options' => [
-					'label' => 'License Number',
-				],
-
-				'attributes' => [
-					'id' => 'id_license_number'
+					'id' => 'userType'
 				]
 			]);
 		}
@@ -268,7 +215,7 @@
 				],
 
 				'attributes' => [
-					'id' => 'id_profile'
+					'id' => 'profile'
 				]
 			]);
 		}

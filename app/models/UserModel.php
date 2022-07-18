@@ -6,23 +6,18 @@
 
 		protected $_fillables = [
 			'id',
-			'user_code' ,
-			'license_number',
-			'first_name',
-			'middle_name',
-			'last_name',
-			'birthdate',
+			'firstname',
+			'lastname',
 			'gender',
 			'address',
-			'phone_number',
+			'phone',
 			'email',
 			'username',
 			'password',
 			'created_at',
 			'created_by',
 			'user_type',
-			'profile',
-			'updated_at'
+			'profile'
 		];
 
 
@@ -31,54 +26,32 @@
 			$user = parent::get($id);
 			if(!$user)
 				return false;
-
-			$this->address = model('AddressModel');
-
-			$user_address = $this->address->getByModuleAndId('USER' , $user->id)[0] ?? false;
-
-			$user->address_object = $user_address;
-
 			return $user;
 		}
 
 		public function save($user_data , $id = null)
 		{
 			$user_id = $id;
-
 			$fillable_datas = $this->getFillablesOnly($user_data);
+			$validated = $this->validate($fillable_datas, $id);
 
-			$validated = $this->validate($fillable_datas , $id );
-
-			//include age
-			if( isset($fillable_datas['birthdate']) )
-				$fillable_datas['age'] = $this->computeAge($fillable_datas['birthdate']);
-
-			if(!$validated) return false;
-				
-
-			if( !is_null($id) )
+			if(!is_null($id))
 			{
 				//change password also
 				if( empty($fillable_datas['password']) )
 					unset($fillable_datas['password']);
-
 				$res = parent::update($fillable_datas , $id);
-
 				if( isset($user_data['profile']) ){
 					$this->uploadProfile('profile' , $id);
 				}
-
 				$user_id = $id;
 			}else
 			{
 				$password = random_letter(6);
-
-				$fillable_datas['user_code'] = $this->generateCode($user_data['user_type']);
+				// $fillable_datas['user_code'] = $this->generateCode($user_data['user_type']);
 				$fillable_datas['password'] = $password;
-
 				$user_id = parent::store($fillable_datas);
-
-				$this->sendCredential($user_id);
+				// $this->sendCredential($user_id);
 			}
 			
 			return $user_id;
@@ -146,23 +119,13 @@
 
 		public function create($user_data , $profile = '')
 		{
-
 			$res = $this->save($user_data);
-
 			if(!$res) {
 				$this->addError("Unable to create user");
 				return false;
 			}
-
 			if(!empty($profile) )
 				$this->uploadProfile($profile , $res);
-
-			$this->address = model('AddressModel');
-
-			$user_data['module_key'] = 'USER';
-			$user_data['module_id']  =  $res;
-
-			$this->address->create($user_data);
 
 			$this->addMessage("User {$user_data['first_name']} Created");
 			return $res;
@@ -226,15 +189,14 @@
 		}
 
 
-		public function getAll( $params = [] )
+		public function getAll($params = [])
 		{
 			$where = null;
-			$order = " ORDER BY first_name asc ";
+			$order = " ORDER BY firstname asc ";
 
-			if( isset($params['order']) )
+			if(isset($params['order']))
 				$order = " ORDER BY {$params['order']}";
-
-			if( isset($params['where']) )
+			if(isset($params['where']))
 				$where = " WHERE ".$this->conditionConvert($params['where']);
 
 			$this->db->query(
@@ -242,10 +204,7 @@
 					{$where} {$order}"
 			);
 
-
 			return $this->db->resultSet();
-
-			return parent::getAssoc('first_name' , $condition);
 		}
 
 		public function generateCode($user_type)

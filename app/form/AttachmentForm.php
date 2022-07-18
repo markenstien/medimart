@@ -8,8 +8,6 @@
 
 	class AttachmentForm extends Form
 	{
-
-
 		public function __construct()
 		{
 			parent::__construct();
@@ -33,11 +31,7 @@
 			
 			$this->addSubmit();
 		}
-
-
-
 		
-
 		public function addName()
 		{
 			$this->add([
@@ -92,6 +86,14 @@
 			$this->add([
 				'type' => 'hidden',
 				'name' => 'global_id',
+			]);
+		}
+
+		public function addRedirectTo()
+		{
+			$this->add([
+				'type' => 'hidden',
+				'name' => 'redirect_to',
 			]);
 		}
 

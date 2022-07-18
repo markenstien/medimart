@@ -61,7 +61,7 @@
             }
         }
 
-        if( is_array($parameter) && !empty($parameter))
+        if(is_array($parameter) && !empty($parameter))
         {
             if( empty($parameterString) )
                 $parameterString .= '?';
@@ -80,7 +80,7 @@
         $routesDeclaredKeys = array_keys($routesDeclared);
 
 
-        if( !in_array($routeKey , $routesDeclaredKeys)  ){
+        if(!in_array($routeKey , $routesDeclaredKeys)  ){
             echo die("Route {$routeKey} doest not exists");
         }
 
@@ -88,7 +88,7 @@
 
         $calledRouteKeys = array_keys($calledRoute);
 
-        if( !in_array($method, $calledRouteKeys)){
+        if(!in_array($method, $calledRouteKeys)){
             echo die("Route {$routeKey} doest not have {$method} method does not exist!");
         }
         

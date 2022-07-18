@@ -106,9 +106,8 @@
 				}else
 				{
 					if( isset($params['options']['label'])){
-						$label .= " * ";
+						$label .= "<span style='color:red'>*<span>";
 					}
-					
 					$item['required'] = TRUE;
 				}
 					
@@ -343,15 +342,11 @@
 
 		public function setValueObject($object)
 		{
-			$return = [];
-
 			$items = $this->_items;
-
 			foreach($items as $key => $item) 
 			{
 				$name = trim($item['name']);//column_name equivalent
-
-				if( isset($object->$name) )
+				if(isset($object->$name))
 					$items[$key]['value'] = $object->$name;
 			}
 
@@ -461,7 +456,7 @@
 
 		final public function customSubmit($value = null , $name = null, $attributes = null)
 		{
-			$class = 'btn btn-primary form-verify';
+			$class = 'btn btn-primary btn-sm';
 
 			if(isset($attributes['class'])){
 				$class = $attributes['class'];

@@ -1,6 +1,4 @@
-const URL = 'https://vidco-pims.xyz';
-// const URL = 'http://th.covidpims';
-
+const URL = 'http://dev.medimart';
 const DS  = '/';
 
 const getURL = function(called_url = null){

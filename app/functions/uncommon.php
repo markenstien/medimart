@@ -315,7 +315,6 @@
     function auth($key = null)
     {
         $auth = Session::get('auth');
-
         if(!$auth)
             return false;
 

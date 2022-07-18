@@ -1,7 +1,6 @@
 <?php
 	use Form\AttachmentForm;
 	load(['AttachmentForm'] , APPROOT.DS.'form');
-
 	class Controller
 	{	
 
@@ -18,8 +17,8 @@
 			}
 
 			$this->data = [];
+			$this->data['whoIs'] = whoIs();
 			$user = whoIs(); 
-
 			if($user && isEqual($user->user_type , 'admin'))
 				$this->is_admin = true;
 		}

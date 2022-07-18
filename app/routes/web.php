@@ -38,6 +38,27 @@
 		'show'   => $controller.'/show'
 	];
 
+
+	$controller = '/SupplierController';
+	$routes['supplier'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'download' => $controller.'/download',
+		'show'   => $controller.'/show'
+	];
+
+	$controller = '/ItemController';
+	$routes['item'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'download' => $controller.'/download',
+		'show'   => $controller.'/show'
+	];
+
 	$controller = '/DashboardController';
 	$routes['dashboard'] = [
 		'index' => $controller.'/index',

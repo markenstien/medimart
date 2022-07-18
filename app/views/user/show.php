@@ -13,55 +13,31 @@
 					<div>
 						<img src="<?php echo $user->profile?>" style="width: 150px;">
 					</div>
-					<div>
+					<!-- <div>
 						<label class="tx-11">Reference</label>
 						<p><?php echo $user->user_code?></p>
-					</div>
-
-					<div>
-						<label class="tx-11">User Type</label>
-						<p><?php echo $user->user_type?> <?php if( $user->license_number) :?> <small>License Number(<?php echo $user->license_number?>)</small> <?php endif?></p>					
-					</div>
-
+					</div> -->
 					<div>
 						<label class="tx-11">Name</label>
-						<p><?php echo $user->last_name . ',' . $user->first_name . ' '.$user->middle_name?></p>
+						<p><?php echo $user->lastname . ',' . $user->firstname?></p>
 					</div>
 					<div>
 						<label class="tx-11">Gender</label>
 						<p><?php echo $user->gender?></p>
 					</div>
 					<div>
-						<label class="tx-11">Birth date</label>
-						<p><?php echo $user->birthdate?></p>
-					</div>
-					<div>
-						<label class="tx-11">Age</label>
-						<p><?php echo $user->age?></p>
-					</div>
-					<hr>
-					<div>
 						<label class="tx-11">Email And Mobile Number</label>
 						<p><?php echo $user->email?></p>
-						<p><?php echo $user->phone_number?></p>
+						<p><?php echo $user->phone?></p>
 
 						<span><a href="<?php echo _route('user:sendCredential' , $user->id)?>" title="Click to send the credential to the user">Send Credentials to User :</a><?php echo $user->email?></span>
 					</div>
-					<?php if($user->address_object) :?>
-						<div>
-							<label class="tx-11">Address</label>
-							<p><?php
-								$address = $user->address_object;
-								echo "{$address->block_house_number} {$address->street} {$address->city} {$address->barangay} {$address->zip}";
-							?></p>
-						</div>
-					<?php else:?>
-						<div>
-							<p>Edit to add address details</p>
-						</div>
-					<?php endif?>
+					<div>
+						<label class="tx-11">Address</label>
+						<p><?php echo "$user->address"?></p>
+					</div>
 					<hr>
-					<?php if( $is_admin && !isEqual($user->user_type , 'admin') ) :?>
+					<?php if($is_admin && !isEqual($user->user_type , 'admin')) :?>
 						<div>
 							<h4 class="bg-danger">Danger Zone</h4>
 							<hr>
@@ -73,62 +49,6 @@
 				</div>
 			</div>	
 		</div>
-
-		<?php if( isEqual($user->user_type , ['patient'])) :?>
-			<div class="col-md-8">
-				<?php if( ! is_null($number_of_days_remaining) ) :?>
-					<div class="card">
-						<div class="card-header">
-							<h4 class="card-title">UNDER HOME QUARANTINE</h4>
-						</div>
-
-						<div class="card-body">
-							Number Of days Remaining <strong> <?php echo $number_of_days_remaining?> </strong> Before Quarantine Completion.
-							Under Quarantine for Approx (<strong><?php echo $number_of_days_after_deployment ?></strong>)
-
-							<div>
-								<a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Send Email</a>
-							</div>
-						</div>
-					</div>
-				<?php endif?>
-				<div class="card">
-					<div class="card-header">
-						<h4 class="card-title">Laboratory Results</h4>
-					</div>
-
-					<div class="card-body">
-						<div class="table-responsive">
-							<table class="table table-bordered dataTable">
-								<thead>
-									<th>Reference</th>
-									<th>Date Requested</th>
-									<th>Date Reported</th>
-									<th>Severity</th>
-									<th>Requested By</th>
-									<th>Action</th>
-								</thead>
-
-								<tbody>
-									<?php foreach($laboratory_results as $row) : ?>
-										<tr>
-											<td><?php echo $row->reference?></td>
-											<td><?php echo $row->date_requested?></td>
-											<td><?php echo $row->date_reported?></td>
-											<td><?php echo $row->severity?></td>
-											<td><?php echo $row->doctor_name?></td>
-											<td>
-												<?php echo btnView(_route('lab:show' , $row->id),'View')?>
-											</td>
-										</tr>
-									<?php endforeach?>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		<?php endif?>
 	</div>
 
 

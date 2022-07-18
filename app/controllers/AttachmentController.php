@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use Mpdf\Tag\I;
+
 	class AttachmentController extends Controller
 	{	
 
@@ -11,17 +14,19 @@
 
 		public function create()
 		{
-			if( isSubmitted() )
-			{
+			if(isSubmitted()) {
 				$post = request()->posts();
+				$res = $this->model->upload($post, 'file');
 
-				$res = $this->model->upload($post , 'file');
-
-				Flash::set( $this->model->getMessageString());
+				Flash::set($this->model->getMessageString());
 
 				if(!$res)
-					Flash::set( $this->model->getErrorString() );
+					Flash::set($this->model->getErrorString());
 
+				if(!empty($post['redirect_to'])) {
+					return redirect(_route($post['redirect_to']));
+				}
+				
 				return request()->return();
 			}
 		}

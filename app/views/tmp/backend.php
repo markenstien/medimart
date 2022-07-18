@@ -59,8 +59,7 @@ License: For each use you must have a valid license purchased only from above li
                             COVID<span>PIMS</span>
                         </a>
                         <?php if($auth) :?>
-                            <?php $notifications = _notify_pull_items( $auth->id )?>
-
+                            <?php $notifications = _notify_pull_items($auth->id)?>
                             <form class="search-form">
                                 <div class="input-group">
                                     <div class="input-group-text">
@@ -70,7 +69,6 @@ License: For each use you must have a valid license purchased only from above li
                                 </div>
                             </form>
                             <ul class="navbar-nav">
-                              
                                   <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <i data-feather="bell"></i>
@@ -115,7 +113,7 @@ License: For each use you must have a valid license purchased only from above li
                                       <img class="wd-80 ht-80 rounded-circle" src="https://via.placeholder.com/80x80" alt="">
                                     </div>
                                     <div class="text-center">
-                                      <p class="tx-16 fw-bolder"><?php echo $auth->first_name . ' '.$auth->last_name?></p>
+                                      <p class="tx-16 fw-bolder"><?php echo $auth->firstname . ' '.$auth->lastname?></p>
                                       <p class="tx-12 text-muted"><?php echo $auth->user_type ?></p>
                                     </div>
                                   </div>
@@ -153,49 +151,27 @@ License: For each use you must have a valid license purchased only from above li
                                     <span class="menu-title">Dashboard</span>
                                 </a>
                             </li>
-                            <?php if( isEqual($auth->user_type , ['medical personels' , 'admin' , 'doctor'])) :?>
+                            <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="link-icon" data-feather="mail"></i>
-                                    <span class="menu-title">Users</span>
-                                    <i class="link-arrow"></i>
-                                </a>
-                                <div class="submenu">
-                                    <ul class="submenu-item">
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('user:create')?>">Create</a></li>
-                                        <li class="category-heading">Medical Personels</li>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('user:index' , ['user_type' => 'medical personel'])?>">Staff</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('user:index' , ['user_type' => 'doctor'])?>">Doctors</a></li>
-                                        <li class="category-heading">Others<li>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('user:index')?>">All</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('user:index' , ['user_type' => 'patient'])?>">Patients</a></li>
-                                    </ul>
-                                </div>
+                              <a class="nav-link" href="<?php echo _route('user:index')?>">
+                                  <i class="link-icon" data-feather="box"></i>
+                                  <span class="menu-title">Users</span>
+                              </a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="<?php echo _route('supplier:index')?>">
+                                  <i class="link-icon" data-feather="box"></i>
+                                  <span class="menu-title">Suppliers</span>
+                              </a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="<?php echo _route('item:index')?>">
+                                  <i class="link-icon" data-feather="box"></i>
+                                  <span class="menu-title">Items</span>
+                              </a>
                             </li>
                             <?php endif?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo _route('patient-record:index')?>">
-                                    <i class="link-icon" data-feather="box"></i>
-                                    <span class="menu-title">Records</span>
-                                </a>
-                            </li>
-                            <?php if( isEqual($auth->user_type , ['medical personels' , 'admin' , 'doctor'])) :?>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="link-icon" data-feather="mail"></i>
-                                    <span class="menu-title">Lab Results</span>
-                                    <i class="link-arrow"></i>
-                                </a>
-                                <div class="submenu">
-                                    <ul class="submenu-item">
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('lab-request:index' , ['user_type' => 'medical personels'])?>">Requests</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('lab:index' , ['user_type' => 'doctor'])?>">Results</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <?php endif?>
-
-                            <?php if( isEqual($auth->user_type , ['medical personels' , 'admin' , 'doctor'])) :?>
+                            <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="link-icon" data-feather="mail"></i>
@@ -205,16 +181,9 @@ License: For each use you must have a valid license purchased only from above li
                                 <div class="submenu">
                                     <ul class="submenu-item">
                                         <li class="nav-item"><a class="nav-link" href="<?php echo _route('queue:index')?>">Queueing</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('hospital:index')?>">Hospitals</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('deployment:index')?>">Deployed Patients</a></li>
-
-                                        <?php if( isEqual($auth->user_type , 'admin')) :?>
+                                        <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
                                             <li class="nav-item">
                                                 <p class="category-heading">File Maintenance</p>
-                                            </li>
-
-                                            <li class="nav-item"><a class="nav-link" 
-                                                href="<?php echo _route('criteria:index')?>">Classifications</a>
                                             </li>
 
                                             <li class="nav-item"><a class="nav-link" 
@@ -224,10 +193,9 @@ License: For each use you must have a valid license purchased only from above li
                                     </ul>
                                 </div>
                             </li>
-
                             <?php endif?>
 
-                            <?php if( isEqual($auth->user_type , ['medical personels' , 'admin' , 'doctor'])) :?>
+                            <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
                             <li class="nav-item">
                                 <a href="/ReportController/create" class="nav-link">
                                     <i class="link-icon" data-feather="hash"></i>
