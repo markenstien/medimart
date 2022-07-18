@@ -1,8 +1,6 @@
 <?php
 	use Form\AttachmentForm;
-	use Form\AddressForm;
-	
-	load(['AttachmentForm' , 'AddressForm'] , APPROOT.DS.'form');
+	load(['AttachmentForm'] , APPROOT.DS.'form');
 
 	class Controller
 	{	
@@ -14,19 +12,15 @@
 
 		public function __construct()
 		{
-			if( is_null($this->_attachmentForm) )
-			{
+			if(is_null($this->_attachmentForm)) {
 				$this->_attachmentForm = new AttachmentForm();
 				$this->_attachmentModel = model('AttachmentModel'); 
 			}
 
-			$this->_addressForm = new AddressForm();
-
 			$this->data = [];
-
 			$user = whoIs(); 
 
-			if( $user && isEqual($user->user_type , 'admin'))
+			if($user && isEqual($user->user_type , 'admin'))
 				$this->is_admin = true;
 		}
 
@@ -35,13 +29,10 @@
 			$model = ucfirst($model);
 
 			if(file_exists(MODELS.DS.$model.'.php')){
-
 				require_once MODELS.DS.$model.'.php';
-
 				return new $model;
 			}
 			else{
-
 				die($model . 'MODEL NOT FOUND');
 			}
 		}
@@ -53,13 +44,10 @@
 				$model = ucfirst($row);
 
 				if(file_exists(MODELS.DS.$model.'.php')){
-
 					require_once MODELS.DS.$model.'.php';
-
 					$this->$key = new $model;
 				}
 				else{
-
 					die($model . 'MODEL NOT FOUND');
 				}
 			}

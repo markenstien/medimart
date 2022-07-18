@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS categories;
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,

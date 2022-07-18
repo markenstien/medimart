@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS orders;
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `reference` varchar(50) NOT NULL,

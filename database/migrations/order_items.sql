@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS orders_item;
 CREATE TABLE `orders_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,

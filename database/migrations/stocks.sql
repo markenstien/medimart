@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS stocks;
 CREATE TABLE `stocks` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `item_id` int(10) DEFAULT NULL,
