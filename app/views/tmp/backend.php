@@ -56,7 +56,7 @@ License: For each use you must have a valid license purchased only from above li
                 <div class="container">
                     <div class="navbar-content">
                         <a href="#" class="navbar-brand">
-                            COVID<span>PIMS</span>
+                            <?php echo COMPANY_NAME?>
                         </a>
                         <?php if($auth) :?>
                             <?php $notifications = _notify_pull_items($auth->id)?>

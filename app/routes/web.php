@@ -21,6 +21,15 @@
 		'sendCredential' => $controller.'/sendCredential'
 	];
 
+	$controller = '/StockController';
+	$routes['stock'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/addStock',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+	];
+
 	$controller = '/AuthController';
 	$routes['auth'] = [
 		'login' => $controller.'/login',
@@ -59,6 +68,17 @@
 		'show'   => $controller.'/show'
 	];
 
+	$controller = '/TransactionController';
+	$routes['transaction'] = [
+		'index' => $controller.'/index',
+		'purchase' => $controller.'/purchase',
+		'purchaseAddItem' => $controller.'/purchaseAddItem',
+		'purchaseReset' => $controller.'/purchaseResetSession',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'download' => $controller.'/download',
+		'show'   => $controller.'/show'
+	];
 	$controller = '/DashboardController';
 	$routes['dashboard'] = [
 		'index' => $controller.'/index',

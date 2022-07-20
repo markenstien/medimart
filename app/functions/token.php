@@ -95,6 +95,9 @@
 		}
 	}
 
+	function csrfGet(){
+		return Session::get('csrfToken');
+	}
 	function csrfReload(){
 		return Session::set('csrfToken' , get_token_random_char(20));
 	}

@@ -118,6 +118,34 @@
 			$this->_items[$name] = $item;
 		}
 
+		public function addCustom($name, $label, $htmlCustom) {
+			$this->_customItems[$name] = [
+				'label' => $label,
+				'html'  => $htmlCustom
+			];
+		}
+
+		public function getCustom($name, $displayType = 'row') {
+			$field = $this->_customItems[$name];
+			$form_label = $this->_form->label($field['label']);
+
+			if ($displayType == 'row') {
+				return <<<EOF
+					<div class='row mb-2'>
+						<div class='col-md-3'>{$form_label}</div>
+						<div class='col-md-9'>{$field}</div>
+					</div>
+				EOF;
+			} else {
+				return <<<EOF
+					<div> 
+						{$form_label}
+						{$field['html']}
+					</div>
+				EOF;
+			}
+		}
+
 		public function addAfter($after_key , $item)
 		{
 			$this->add($item);
@@ -273,7 +301,7 @@
 		{
 
 		}
-
+		
 
 
 		private function mergeAddtributeAndClass( $params )

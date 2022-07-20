@@ -1,7 +1,8 @@
 <?php build('content') ?>
     <div class="card">
-        <div class="card-title">
+        <div class="card-header">
             <h4 class="card-title">Item Preview</h4>
+            <?php Flash::show()?>
             <?php echo btnEdit(_route('item:edit', $item->id))?>
         </div>
 
@@ -58,6 +59,33 @@
 
                     <section>
                         <h4>Stocks</h4>
+                        <div class="text-right">
+                            <?php echo btnCreate(_route('stock:create', [
+                                'item_id' => $item->id
+                            ]))?>
+                        </div>
+                        <hr>
+                        <h5>Total : <?php echo $item->total_stock?></h5>
+                        <label for="#">Recent Movement</label>
+                        <table class="table">
+                            <tr>
+                                <td>Origin</td>
+                                <td>Description</td>
+                                <td>Quantity</td>
+                            </tr>
+                            <tbody>
+                                <?php foreach($stocks as $key => $row):?>
+                                    <tr>
+                                        <td><?php echo $row->entry_origin?></td>
+                                        <td><?php echo $row->remarks?></td>
+                                        <td><?php echo $row->quantity?></td>
+                                    </tr>
+                                <?php endforeach?>
+                            </tbody>
+                        </table>
+
+                        <section></section>
+                        
                     </section>
                 </div>
                 <div class="col-md-6">
@@ -73,6 +101,7 @@
                                         <img src="<?php echo $row->full_url?>"
                                             style="width:100%">
                                         <div><label for="#"><?php echo $row->label?></label></div>
+                                        <a href="<?php echo _route('attachment:delete', $row->id)?>">Delete</a>
                                     </div>
                                 </div>
                             <?php endforeach?>

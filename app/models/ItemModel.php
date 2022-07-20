@@ -64,4 +64,52 @@
             ]);
         }
 
+         /**
+         * override Model:get
+         */
+        public function get($id) {
+            $productQuantitySQL = $this->_productTotalStockSQLSnippet();
+            $this->db->query(
+                "SELECT item.* , stock.total_stock as total_stock 
+                    FROM {$this->table} as item 
+                    LEFT JOIN (
+                        $productQuantitySQL
+                    ) as stock 
+                    ON stock.item_id = item.id
+                    WHERE id = '{$id}'"
+            );
+
+            return $this->db->single();
+        }
+
+        /**
+         * override Model:all
+         */
+        public function all($where = null , $order_by = null , $limit = null) {
+            $productQuantitySQL = $this->_productTotalStockSQLSnippet();
+
+            if(!is_null($where)) {
+                $where = " WHERE " . parent::conditionConvert($where);
+            }
+
+            if(!is_null($order_by)) {
+                $order_by = " ORDER BY {$order_by} ";
+            }
+
+            $this->db->query(
+                "SELECT item.*, ifnull(stock.total_stock, 'No Stock') as total_stock
+                    FROM {$this->table} as item 
+                    LEFT JOIN ($productQuantitySQL) as stock
+                    ON stock.item_id = item.id
+                    {$where} {$order_by} {$limit}"
+            );
+
+            return $this->db->resultSet();
+        }
+
+        private function _productTotalStockSQLSnippet() {
+            return "SELECT SUM(quantity) as total_stock ,item_id
+            FROM stocks 
+            GROUP BY item_id";
+        }
     }

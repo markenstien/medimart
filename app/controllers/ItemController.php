@@ -11,6 +11,7 @@
         {
             parent::__construct();
             $this->model = model('ItemModel');
+            $this->stockModel = model('StockModel');
             $this->data['item_form'] = new ItemForm();
         }
 
@@ -41,6 +42,7 @@
             $this->data['item'] = $this->model->get($id);
             $this->data['images'] = $this->model->getImages($id);
             $this->data['attachmentForm'] = $this->attachmentForm($id);
+            $this->data['stocks'] = $this->stockModel->getProductLogs($id,null,5);
             return $this->view('item/show', $this->data);
         }
 
