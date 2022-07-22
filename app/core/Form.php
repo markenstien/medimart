@@ -98,8 +98,7 @@
 				'preserve' => $preserve
 			];
 
-			if( isset($params['required']) )
-			{
+			if(isset($params['required'])) {
 				if( $params['required'] === FALSE) 
 				{
 					unset($params['required']);
@@ -118,6 +117,7 @@
 			$this->_items[$name] = $item;
 		}
 
+		
 		public function addCustom($name, $label, $htmlCustom) {
 			$this->_customItems[$name] = [
 				'label' => $label,

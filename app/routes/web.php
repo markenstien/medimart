@@ -77,7 +77,8 @@
 		'create' => $controller.'/create',
 		'delete' => $controller.'/destroy',
 		'download' => $controller.'/download',
-		'show'   => $controller.'/show'
+		'show'   => $controller.'/show',
+		'savePayment'  => $controller.'/savePayment'
 	];
 	$controller = '/DashboardController';
 	$routes['dashboard'] = [

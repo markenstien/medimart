@@ -19,35 +19,20 @@
             $this->addAvailableStock();
         }
 
-        public function addItem() {
+        public function addItem($value = null) {
             $itemModel = model('ItemModel');
             $items = $itemModel->all(null, 'name asc');
-
             $html = "<select required id='item' class='form-control' name='item_id'>";
                 $html .= "<option value=''>--Select Item</option>";
                 foreach($items as $key => $row) {
+                    $isSelected = $row->id == $value ? 'selected' : '';
                     $html .= "<option value='{$row->id}' 
                         data-price='{$row->sell_price}'
-                        data-stock='{$row->total_stock}'>{$row->name}</option>";
+                        data-stock='{$row->total_stock}' {$isSelected}>{$row->name}</option>";
                 }
 
             $html .= "</select>";
-
             $this->addCustom('item_id', 'Item', $html);
-
-            // $this->add([
-            //     'type' => 'select',
-            //     'name' => 'item_id',
-            //     'required' => true,
-            //     'options' => [
-            //         'option_values' => $items,
-            //         'label' => 'items',
-            //     ],
-            //     'attributes' => [
-            //         'id' => 'item'
-            //     ],
-            //     'class' => 'form-control'
-            // ]);
         }
 
         public function addQuantity() {

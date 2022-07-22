@@ -3,6 +3,7 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Purchase</h4>
+            <?php Flash::show()?>
             #<?php echo $session?> <a href="<?php echo _route('transaction:purchaseReset',['csrfToken' => csrfGet()])?>">Reset</a>
         </div>
         
@@ -33,8 +34,7 @@
                                         <td>
                                             <?php echo $row->quantity?>
                                             <div>
-                                                <a href="#">Edit</a> | 
-                                                <a href="#">Add</a>
+                                                <a href="?action=edit_item&id=<?php echo $row->id?>&csrfToken=<?php echo csrfGet()?>">Edit</a>
                                             </div>
                                         </td>
                                         <td><?php echo $row->sku?></td>
@@ -68,7 +68,11 @@
                                     <?php
                                         Form::open([
                                             'method' => 'post'
-                                        ])
+                                        ]);
+
+                                        if(isset($request['id'])) {
+                                            Form::hidden('id', $request['id']);
+                                        }
                                     ?>
                                         <div class="row">
                                             <div class="col-md-8">
@@ -101,7 +105,8 @@
                                         </div>
 
                                     <div class="form-group">
-                                        <?php Form::submit('add_item', 'Add Item')?>
+                                        <?php Form::submit('add_item', 'Save')?>
+                                        <a href="?" class="btn btn-warning btn-sm">Cancel</a>
                                     </div>
                                     <?php Form::close()?>
                                 </div>
@@ -112,15 +117,10 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <h4>Payment</h4>
-                <?php
-                    Form::open([
-                        'method' => 'post'
-                    ])
-                ?>
-                
-
-                <?php Form::close()?>
+                <div class="card-body">
+                    <h4>Payment</h4>
+                    <?php echo $paymentForm->getForm()?>
+                </div>
             </div>
         </div>
     </div>
@@ -128,16 +128,32 @@
 
 <?php build('scripts')?>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function()
+        {
             let price = $("#price");
             let stock = $("#available_stock");
-            let quantity = $("#quantity");
+            let quantity = $("#quantity");    
+            let item = $("#item");
+
+            displayPriceAndStock();
+
             $("#item").change(function(e){
-                let itemSelected = $(this).find(':selected');
-                price.val(itemSelected.data('price'));
-                stock.val(itemSelected.data('stock'));
-                quantity.val(1);
+                displayPriceAndStock();
             });
+
+            function displayPriceAndStock() {
+                if(item.val().length === 0) {
+
+                } else {
+                    let itemSelected = item.find(':selected');
+                    price.val(itemSelected.data('price'));
+                    stock.val(itemSelected.data('stock'));
+
+                    if(quantity.val().length == 0)
+                        quantity.val(1);
+                    $("#exampleModalLongScollable").modal('show');
+                }
+            }
         });
     </script>
 <?php endbuild()?>
