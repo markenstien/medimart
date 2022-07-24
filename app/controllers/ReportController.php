@@ -10,6 +10,8 @@
 
 		public function create()
 		{	
+
+			return $this->view('report/index');
 			$request_params = request()->inputs();
 
 			$report_sections = $request_params['report_sections'] ?? [];

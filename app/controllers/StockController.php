@@ -8,9 +8,11 @@
         {
             $this->data['stock_form'] = new StockForm();
             $this->model = model('StockModel');
+            $this->itemModel = model('ItemModel');
         }
         public function index() {
-
+            $this->data['stocks'] = $this->model->getStocks();
+            return $this->view('stock/index', $this->data);
         }
 
         public function addStock() {
@@ -34,9 +36,21 @@
                 Flash::set("Invalid Request",'danger');
                 csrfValidate();
             }
-
-
+            $this->data['item'] = $this->itemModel->get($request['item_id']);
             $this->data['stock_form']->setValue('item_id', $request['item_id']);
             return $this->view('stock/add_stock', $this->data);
+        }
+
+        public function log() {
+            $request = request()->inputs();
+
+            if (isset($request['item_id'])) {
+                $logs = $this->model->getProductLogs($request['item_id']);
+            } else {
+                $logs = $this->model->all(null,'id desc');
+            }
+
+            $this->data['logs'] = $logs;
+            return $this->view('stock/logs', $this->data);
         }
     }

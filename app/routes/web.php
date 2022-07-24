@@ -28,6 +28,7 @@
 		'create' => $controller.'/addStock',
 		'delete' => $controller.'/destroy',
 		'show'   => $controller.'/show',
+		'log'   => $controller.'/log',
 	];
 
 	$controller = '/AuthController';
@@ -80,6 +81,35 @@
 		'show'   => $controller.'/show',
 		'savePayment'  => $controller.'/savePayment'
 	];
+
+	$controller = '/ReceiptController';
+	$routes['receipt'] = [
+		'index' => $controller.'/index',
+		'order' => $controller.'/orderReceipt',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+	];
+
+	$controller = '/OrderController';
+	$routes['order'] = [
+		'index' => $controller.'/index',
+		'order' => $controller.'/orderReceipt',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+		'void'   => $controller.'/voidOrder',
+	];
+
+	$controller = '/PaymentController';
+	$routes['payment'] = [
+		'index' => $controller.'/index',
+		'order' => $controller.'/orderReceipt',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show'
+	];
+	
 	$controller = '/DashboardController';
 	$routes['dashboard'] = [
 		'index' => $controller.'/index',

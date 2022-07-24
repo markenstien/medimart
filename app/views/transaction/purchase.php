@@ -35,6 +35,7 @@
                                             <?php echo $row->quantity?>
                                             <div>
                                                 <a href="?action=edit_item&id=<?php echo $row->id?>&csrfToken=<?php echo csrfGet()?>">Edit</a>
+                                                <a href="?action=delete_item&id=<?php echo $row->id?>&csrfToken=<?php echo csrfGet()?>">Delete</a>
                                             </div>
                                         </td>
                                         <td><?php echo $row->sku?></td>
@@ -118,14 +119,36 @@
             </div>
             <div class="col-md-4">
                 <div class="card-body">
-                    <h4>Payment</h4>
-                    <?php echo $paymentForm->getForm()?>
+                    <?php echo $paymentForm->start()?>
+                        <h4>Payment</h4>
+                        <?php echo $paymentForm->getFormItems();?>
+                        <section id="onlinePaymentMeta">
+                            <h4 class="mb-2">Online Payment Details</h4>
+                            <div class="form-group">
+                                <?php echo $paymentOnlineForm->getRow('organization')?>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $paymentOnlineForm->getRow('external_reference')?>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $paymentOnlineForm->getRow('account_number')?>
+                            </div>
+                        </section>
+                        <input type="submit" class="btn btn-primary btn-sm" value="Save Payment">
+                    <?php echo $paymentForm->end()?>
                 </div>
             </div>
         </div>
     </div>
 <?php endbuild()?>
 
+<?php build('styles')?>
+    <style>
+        #onlinePaymentMeta{
+            display: none;
+        }
+    </style>
+<?php endbuild()?>
 <?php build('scripts')?>
     <script>
         $(document).ready(function()
@@ -139,6 +162,14 @@
 
             $("#item").change(function(e){
                 displayPriceAndStock();
+            });
+            
+            $("#payment_method").change(function(e) {
+                if($(this).val() == 'ONLINE') {
+                    $("#onlinePaymentMeta").show();
+                }else{
+                    $("#onlinePaymentMeta").hide();
+                }
             });
 
             function displayPriceAndStock() {

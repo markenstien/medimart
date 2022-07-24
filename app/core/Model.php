@@ -51,10 +51,15 @@
 
 		public function update($values , $id)
 		{
+			if (is_array($id)) {
+				$where = $this->conditionConvert($id);
+			} else {
+				$where = "id = '{$id}'";
+			}
 			$data = [
 				$this->table,
 				$values,
-				"id = '{$id}'"
+				$where
 			];
 			
 			return $this->dbHelper->update(...$data);

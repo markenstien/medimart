@@ -186,16 +186,9 @@ License: For each use you must have a valid license purchased only from above li
                                 </a>
                                 <div class="submenu">
                                     <ul class="submenu-item">
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('queue:index')?>">Queueing</a></li>
-                                        <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
-                                            <li class="nav-item">
-                                                <p class="category-heading">File Maintenance</p>
-                                            </li>
-
-                                            <li class="nav-item"><a class="nav-link" 
-                                                href="<?php echo _route('form:index')?>">Form Builder</a>
-                                            </li>
-                                        <?php endif?>
+                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('order:index')?>">Orders</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('payment:index')?>">Payments</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('stock:index')?>">Stocks</a></li>
                                     </ul>
                                 </div>
                             </li>

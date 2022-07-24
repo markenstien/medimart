@@ -20,8 +20,6 @@
             $this->addRemarks();
             $this->addPaymentMethod();
             $this->addAmount();
-
-            $this->customSubmit('Save');
         }
 
         public function addName() {
@@ -78,6 +76,9 @@
                     'option_values' => [
                         'ONLINE','CASH'
                     ]
+                ],
+                'attributes' => [
+                    'id' => 'payment_method'
                 ],
                 'value' => 'CASH'
             ]);

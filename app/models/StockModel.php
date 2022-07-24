@@ -48,4 +48,37 @@
             $params['condition']['item_id'] = $itemId;
             return parent::all($params['condition'], $params['order_by'] ?? 'id desc', $params['limit'] ?? null);
         }
+
+        public function getItemStock($itemid) {
+            $this->db->query(
+                "SELECT sum(quantity) as total_stock
+                    FROM {$this->table}
+                    WHERE item_id = '{$itemid}'
+                    GROUP BY item_id"
+            );
+            return $this->db->single()->total_stock ?? 0;
+        }
+
+        public function getStocks($params = []) {
+            $this->db->query(
+                "SELECT item.* , stock.total_stock,
+                    CASE
+                        WHEN stock.total_stock <= item.min_stock
+                            THEN 'LOW STOCK LEVEL'
+                        WHEN stock.total_stock >= item.max_stock
+                            THEN 'HIGH STOCK LEVEL'
+                        ELSE 'NORMAL STOCK LEVEL'
+                    END AS stock_level
+                FROM items as item
+                LEFT JOIN (
+                    SELECT ifnull(sum(quantity),0) as total_stock, item_id
+                        FROM stocks
+                        GROUP BY item_id
+                ) as stock
+                ON stock.item_id = item.id
+                "
+            );
+
+            return $this->db->resultSet();
+        }
     }
