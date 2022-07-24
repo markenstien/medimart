@@ -3,10 +3,9 @@
     use Form\PaymentForm;
     use Form\PaymentOnlineForm;
     use Form\PurchaseItemForm;
-use Mpdf\Tag\P;
-use Services\OrderService;
+    use Services\OrderService;
 
-    load(['PurchaseItemForm','PaymentForm','PaymentOnlineForm'], APPROOT.DS.'Form');
+    load(['PurchaseItemForm','PaymentForm','PaymentOnlineForm'], APPROOT.DS.'form');
     load(['OrderService'], APPROOT.DS.'services');
     class TransactionController extends Controller
     {
