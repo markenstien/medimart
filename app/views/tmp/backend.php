@@ -170,9 +170,6 @@ License: For each use you must have a valid license purchased only from above li
                                 </a>
                             </li>
                             <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
-                            
-                            <?php endif?>
-                            <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="link-icon" data-feather="mail"></i>
@@ -203,12 +200,17 @@ License: For each use you must have a valid license purchased only from above li
                                               <span class="menu-title">Supply Orders</span>
                                           </a>
                                         </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" href="<?php echo _route('category:index')?>">
+                                              <span class="menu-title">Categories</span>
+                                          </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
                             <?php endif?>
 
-                            <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
+                            <?php if(isEqual($auth->user_type, ['admin'])) :?>
                             <li class="nav-item">
                                 <a href="/ReportController/create" class="nav-link">
                                     <i class="link-icon" data-feather="hash"></i>
