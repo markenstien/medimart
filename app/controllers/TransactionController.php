@@ -23,8 +23,13 @@
          * purchasing action
          */
         public function purchase() {
-            $request = request()->inputs();
+            $purchaseSession = OrderService::getPurchaseSession();
 
+            if (empty($purchaseSession)) {
+                OrderService::startPurchaseSession();
+            }
+
+            $request = request()->inputs();
             if (isSubmitted()) {
                 $res = $this->model->addOrUpdatePurchaseItem($request, $request['id'] ?? null);
                 if (!$res) {

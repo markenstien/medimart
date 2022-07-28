@@ -2,6 +2,7 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Add Stocks</h4>
+            <?php echo wLinkDefault(_route('item:show', $item->id), 'Back to Item')?>
             <h3>SKU : <?php echo $item->sku?></h3>
             <h3>Item : <?php echo $item->name?></h3>
             <?php Flash::show()?>

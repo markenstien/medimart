@@ -56,37 +56,6 @@
                             </table>
                         </div>
                     </section>
-
-                    <section>
-                        <h4>Stocks</h4>
-                        <div class="text-right">
-                            <?php echo btnCreate(_route('stock:create', [
-                                'item_id' => $item->id
-                            ]))?>
-                        </div>
-                        <hr>
-                        <h5>Total : <?php echo $item->total_stock?></h5>
-                        <label for="#">Recent Movement</label>
-                        <table class="table">
-                            <tr>
-                                <td>Origin</td>
-                                <td>Description</td>
-                                <td>Quantity</td>
-                            </tr>
-                            <tbody>
-                                <?php foreach($stocks as $key => $row):?>
-                                    <tr>
-                                        <td><?php echo $row->entry_origin?></td>
-                                        <td><?php echo $row->remarks?></td>
-                                        <td><?php echo $row->quantity?></td>
-                                    </tr>
-                                <?php endforeach?>
-                            </tbody>
-                        </table>
-
-                        <section></section>
-                        
-                    </section>
                 </div>
                 <div class="col-md-6">
                     <h4>Images</h4>
@@ -108,6 +77,34 @@
                         </div>
                     <?php endif?>
                 </div>
+            </div>
+
+            <div class="mt-2" style="border:1px solid #000; padding:10px">
+                <section>
+                    <h4>Stocks : <?php echo $item->total_stock?></h5></h4>
+                    <div><?php 
+                        echo wLinkDefault(_route('stock:create', [
+                                'item_id' => $item->id
+                        ]), 'Add Stocks'); 
+                    ?></div>
+                    <label for="#">Recent Movement</label>
+                    <table class="table">
+                        <tr>
+                            <td>Origin</td>
+                            <td>Description</td>
+                            <td>Quantity</td>
+                        </tr>
+                        <tbody>
+                            <?php foreach($stocks as $key => $row):?>
+                                <tr>
+                                    <td><?php echo $row->entry_origin?></td>
+                                    <td><?php echo $row->remarks?></td>
+                                    <td><?php echo $row->quantity?></td>
+                                </tr>
+                            <?php endforeach?>
+                        </tbody>
+                    </table>
+                </section>
             </div>
         </div>
     </div>

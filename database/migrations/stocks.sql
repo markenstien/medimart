@@ -13,3 +13,7 @@ CREATE TABLE `stocks` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4
+
+
+alter table stocks
+  add column supply_order_id int(10);

@@ -157,25 +157,20 @@ License: For each use you must have a valid license purchased only from above li
                                     <span class="menu-title">Transaction</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo _route('petty-cash:index')?>">
+                                    <i class="link-icon" data-feather="box"></i>
+                                    <span class="menu-title">Petty Cash</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo _route('order:index')?>">
+                                    <i class="link-icon" data-feather="box"></i>
+                                    <span class="menu-title">Orders</span>
+                                </a>
+                            </li>
                             <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
-                            <li class="nav-item">
-                              <a class="nav-link" href="<?php echo _route('user:index')?>">
-                                  <i class="link-icon" data-feather="box"></i>
-                                  <span class="menu-title">Users</span>
-                              </a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="<?php echo _route('supplier:index')?>">
-                                  <i class="link-icon" data-feather="box"></i>
-                                  <span class="menu-title">Suppliers</span>
-                              </a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="<?php echo _route('item:index')?>">
-                                  <i class="link-icon" data-feather="box"></i>
-                                  <span class="menu-title">Items</span>
-                              </a>
-                            </li>
+                            
                             <?php endif?>
                             <?php if(isEqual($auth->user_type, ['admin','supervisor'])) :?>
                             <li class="nav-item">
@@ -186,9 +181,28 @@ License: For each use you must have a valid license purchased only from above li
                                 </a>
                                 <div class="submenu">
                                     <ul class="submenu-item">
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo _route('order:index')?>">Orders</a></li>
                                         <li class="nav-item"><a class="nav-link" href="<?php echo _route('payment:index')?>">Payments</a></li>
                                         <li class="nav-item"><a class="nav-link" href="<?php echo _route('stock:index')?>">Stocks</a></li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" href="<?php echo _route('user:index')?>">
+                                              <span class="menu-title">Users</span>
+                                          </a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" href="<?php echo _route('item:index')?>">
+                                              <span class="menu-title">Items</span>
+                                          </a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" href="<?php echo _route('supplier:index')?>">
+                                              <span class="menu-title">Suppliers</span>
+                                          </a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" href="<?php echo _route('supply-order:index')?>">
+                                              <span class="menu-title">Supply Orders</span>
+                                          </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>

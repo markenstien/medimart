@@ -7,6 +7,7 @@
     {
         public $table = 'stocks';
         public $_fillables = [
+            'supply_order_id',
             'item_id',
             'quantity',
             'remarks',

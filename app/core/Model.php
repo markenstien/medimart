@@ -205,6 +205,10 @@
 			
 			return $this->dbHelper->single(...$data);
 		}
+		
+		public function lastId() {
+			return $this->last()->id ?? 0;
+		}
 
     final public function dbData($data)
     {

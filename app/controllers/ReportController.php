@@ -8,6 +8,19 @@
 			
 		}
 
+		public function salesReport() {
+
+		}
+
+		public function stocksReport() {
+
+		}
+
+		public function pettyCashReport() {
+
+		}
+		
+
 		public function create()
 		{	
 

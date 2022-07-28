@@ -122,3 +122,13 @@
 		}
 		return true;
 	}
+
+	function referenceSeries($startAt = null, $length = 10, $prefix = null, $suffix = null) {
+		if (is_numeric($startAt)) {
+			$reference = str_pad(($startAt+1),$length,0,STR_PAD_LEFT);
+		}else{
+			$reference = str_pad(random_number(5),$length,0,STR_PAD_LEFT);
+		}
+		return $prefix.$reference.$suffix;
+	}
+	

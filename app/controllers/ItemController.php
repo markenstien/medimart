@@ -42,7 +42,10 @@
             $this->data['item'] = $this->model->get($id);
             $this->data['images'] = $this->model->getImages($id);
             $this->data['attachmentForm'] = $this->attachmentForm($id);
-            $this->data['stocks'] = $this->stockModel->getProductLogs($id,null,5);
+            $this->data['stocks'] = $this->stockModel->getProductLogs($id,[
+                'limit' => 5,
+                'order_by' => 'id desc'
+            ]);
             return $this->view('item/show', $this->data);
         }
 

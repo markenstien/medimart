@@ -8,7 +8,7 @@
         public function start($sessionId, $staffId) {
 
             return parent::store([
-                'reference' => 'ORDR-' . random_number(10),
+                'reference' => referenceSeries(parent::lastId(),6,'OR-'),
                 'session_id' => $sessionId,
                 'staff_id' => $staffId
             ]);

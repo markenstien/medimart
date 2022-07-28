@@ -109,7 +109,49 @@
 		'delete' => $controller.'/destroy',
 		'show'   => $controller.'/show'
 	];
+
+	$controller = '/SupplyOrderController';
+	$routes['supply-order'] = [
+		'index' => $controller.'/index',
+		'order' => $controller.'/orderReceipt',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+		'approve-and-update-stock' => $controller.'/approveAndUpdateStock'
+	];
 	
+	$controller = '/SupplyOrderItemController';
+	$routes['supply-order-item'] = [
+		'add-item' => $controller.'/addItem',
+		'edit-item' => $controller.'/editItem',
+		'order' => $controller.'/orderReceipt',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show'
+	];
+
+	$controller = '/PettyCashController';
+	$routes['petty-cash'] = [
+		'create' => $controller.'/create',
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'order' => $controller.'/orderReceipt',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+		'logs' => $controller.'/logs'
+	];
+
+	$controller = '/CategoryController';
+	$routes['category'] = [
+		'create' => $controller.'/create',
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'order' => $controller.'/orderReceipt',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+		'logs' => $controller.'/logs'
+	];
+
 	$controller = '/DashboardController';
 	$routes['dashboard'] = [
 		'index' => $controller.'/index',
