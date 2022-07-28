@@ -5,7 +5,7 @@ create table petty_cash(
     user_id int(10) not null,
     amount decimal(10,2),
     entry_type enum('ADD','DEDUCT'),
-    category varchar(100),
+    category_id int(10),
     remarks text,
     date date,
     created_at timestamp DEFAULT now(),

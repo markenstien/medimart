@@ -13,6 +13,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Category For</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </thead>
 
@@ -22,7 +23,15 @@
                                 <td><?php echo ++$key?></td>
                                 <td><?php echo $row->name?></td>
                                 <td><?php echo $row->category?></td>
-                                <td><?php echo wLinkDefault(_route('category:edit', $row->id),'Edit')?></td>
+                                <td>
+                                    <?php
+                                        echo $row->active ? 'Active' : 'Not Active';
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php echo wLinkDefault(_route('category:edit', $row->id),'Edit')?> | 
+                                    <?php echo wLinkDefault(_route('category:deactivate', $row->id),'Activate Or Deactivate')?>
+                                </td>
                             </tr>
                         <?php endforeach?>
                     </tbody>

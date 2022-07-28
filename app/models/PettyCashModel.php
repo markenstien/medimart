@@ -10,6 +10,7 @@
             'user_id',
             'amount',
             'entry_type',
+            'category_id',
             'remarks',
             'date',
             'created_by'
@@ -22,8 +23,10 @@
             $_fillables['amount'] = $amount;
 
             if (!is_null($id)) {
+                $this->addMessage(parent::$MESSAGE_UPDATE_SUCCESS);
                 return parent::update($_fillables, $id);
             } else {
+                $this->addMessage(parent::$MESSAGE_CREATE_SUCCESS);
                 $_fillables['reference'] = referenceSeries(parent::lastId(),'6','PT');
                 return parent::store($_fillables);
             }
@@ -57,11 +60,15 @@
             }
 
             $this->db->query(
-                "SELECT petty.*, concat(user.firstname, user.lastname) as staff_name
+                "SELECT petty.*, concat(user.firstname, user.lastname) as staff_name,
+                    category.name as category
                     FROM {$this->table} as petty
-                    LEFT JOIN users as user
-                    ON user.id = petty.user_id
-                    {$where} {$order_by} {$limit}"
+                        LEFT JOIN users as user
+                        ON user.id = petty.user_id
+
+                        LEFT JOIN categories as category
+                        ON petty.category_id = category.id
+                        {$where} {$order_by} {$limit}"
             );
 
             return $this->db->resultSet();

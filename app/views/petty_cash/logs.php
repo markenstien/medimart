@@ -12,6 +12,7 @@
                         <th>#</th>
                         <th>Staff</th>
                         <th>Amount</th>
+                        <th>Category</th>
                         <th>Description</th>
                         <th>Date</th>
                         <th>Action</th>
@@ -25,6 +26,7 @@
                                 <td><?php echo ++$key?></td>
                                 <td><?php echo $row->staff_name?></td>
                                 <td><?php echo amountHTML($row->amount)?></td>
+                                <td><?php echo $row->category?></td>
                                 <td><?php echo $row->remarks?></td>
                                 <td><?php echo $row->date?></td>
                                 <td>

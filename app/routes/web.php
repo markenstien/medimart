@@ -149,7 +149,8 @@
 		'order' => $controller.'/orderReceipt',
 		'delete' => $controller.'/destroy',
 		'show'   => $controller.'/show',
-		'logs' => $controller.'/logs'
+		'logs' => $controller.'/logs',
+		'deactivate' => $controller.'/deactivateOrActivate'
 	];
 
 	$controller = '/DashboardController';

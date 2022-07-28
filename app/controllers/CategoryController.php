@@ -12,7 +12,7 @@
         }
 
         public function index() {
-            $this->data['categories'] = $this->model->all(null, 'name asc,category asc');
+            $this->data['categories'] = $this->model->all(null, 'category desc,name asc');
             return $this->view('category/index', $this->data);
         }
 
@@ -63,5 +63,11 @@
             $this->data['category'] = $category;
 
             return $this->view('category/edit', $this->data);
+        }
+
+        public function deactivateOrActivate($id) {
+            $this->model->deactivateOrActivate($id);
+            Flash::set($this->model->getMessageString());
+            return redirect(_route('category:index'));
         }
     }

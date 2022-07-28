@@ -1,10 +1,11 @@
 <?php 
     namespace Form;
     use Core\Form;
+    use Services\CategoryService;
     use Services\StockService;
     use Services\UserService;
 
-    load(['UserService','StockService'],SERVICES);
+    load(['UserService', 'StockService', 'CategoryService'], SERVICES);
     load(['Form'], CORE);
     
     class PettyCashForm extends Form{
@@ -17,6 +18,7 @@
             $this->addUserId();
             $this->addAmount();
             $this->addEntryType();
+            $this->addCategory();
             $this->addRemarks();
             $this->addDate();
 
@@ -70,6 +72,27 @@
                         StockService::ENTRY_DEDUCT => 'RELEASE',
                         StockService::ENTRY_ADD => 'RETURN'
                     ]
+                ],
+                'class' => 'form-control'
+            ]);
+        }
+
+        public function addCategory() {
+
+            $categoryModel = model('CategoryModel');
+            $categories = $categoryModel->all([
+                'category' => CategoryService::PETTY,
+                'active' => true
+            ], 'name desc');
+            $categories = arr_layout_keypair($categories,['id','name']);
+
+            $this->add([
+                'name' => 'category_id',
+                'type' => 'select',
+                'required' => true,
+                'options' => [
+                    'label' => 'Category',
+                    'option_values' => $categories
                 ],
                 'class' => 'form-control'
             ]);
