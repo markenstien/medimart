@@ -10,7 +10,9 @@
             return parent::store([
                 'reference' => referenceSeries(parent::lastId(),6,'OR-'),
                 'session_id' => $sessionId,
-                'staff_id' => $staffId
+                'staff_id' => $staffId,
+                'created_at' => now(),
+                'order_status' => 'ongoing'
             ]);
         }
 

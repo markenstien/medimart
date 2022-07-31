@@ -14,7 +14,7 @@ CREATE TABLE `orders` (
   `is_paid` int(11),
   `remarks` text DEFAULT NULL,
   `staff_id` int(10),
-  `order_status` enum('completed','cancelled') DEFAULT 'completed',
+  `order_status` enum('completed','cancelled','ongoing') DEFAULT 'ongoing',
   `created_at` timestamp DEFAULT now(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8

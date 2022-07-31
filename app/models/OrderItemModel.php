@@ -8,7 +8,6 @@
     class OrderItemModel extends Model
     {
         public $table = 'order_items';
-
         public $_fillables = [
             'order_id',
             'item_id',
@@ -18,6 +17,9 @@
             'discount_price',
             'remarks'
         ];
+
+        const CATEGORY_QUANTITY = 'CATEGORY_QUANTITY';
+        const CATEGORY_AMOUNT = 'CATEGORY_AMOUNT';
 
         public function __construct()
         {
@@ -164,5 +166,72 @@
                 'entry_type' => StockService::ENTRY_DEDUCT,
                 'entry_origin' => StockService::SALES
             ]);
+        }
+
+        public function getItemsByParam($param = []) {
+            $where = [
+                'ordr.is_paid' => true
+            ];
+
+            if(isset($param['where'])) {
+                $where = array_merge($param['where']);
+            }
+            $where = " WHERE " .parent::conditionConvert($where);
+            $this->db->query(
+                "SELECT item.name as item_name,
+                item.sku as sku, oi.*, ordr.reference, ordr.created_at
+            
+                FROM items as item
+                LEFT JOIN order_items as oi
+                ON oi.item_id = item.id 
+            
+                LEFT JOIN orders as ordr 
+                ON oi.order_id = ordr.id
+                {$where}
+                "
+            );
+
+            return $this->db->resultSet();
+        }
+        /**
+         * category :: quantity,amount
+         * sort :: asc,desc
+         */
+        public function getLowestOrHighest($params = [], $category = null, $sort = null) {
+
+            $where = null;
+
+            if (isset($params['where'])) {
+                $where = " WHERE ".parent::conditionConvert($params['where']);
+            }
+            if ($category == self::CATEGORY_QUANTITY) {
+                $this->db->query(
+                    "SELECT SUM(quantity) as total_quantity, item.name as item_name ,
+                        item.sku
+                        FROM order_items as oi 
+                        LEFT JOIN items as item
+                        ON oi.item_id = item.id 
+                        {$where}
+                        GROUP BY item.id
+                        ORDER BY SUM(quantity) {$sort}
+                    "
+                        
+                );
+            }
+
+            if($category == self::CATEGORY_AMOUNT) {
+                $this->db->query(
+                    "SELECT SUM(sold_price) as total_amount, item.name as item_name ,
+                        item.sku
+                        FROM order_items as oi 
+                        LEFT JOIN items as item
+                        ON oi.item_id = item.id 
+                        {$where}
+                        GROUP BY item.id
+                        ORDER BY SUM(sold_price) {$sort}"
+                );
+            }
+
+            return $this->db->resultSet();
         }
     }

@@ -62,11 +62,28 @@
 	{
         $user = Session::get('auth');
 
-        if( !is_null($prop)){
-            if(is_array($user))
-                return $user[$prop];
-            if(is_object($user))
-                return $user->$prop;            
+        if(!is_null($prop)){
+            if(is_array($prop)) 
+            {
+                $str = '';
+                foreach($prop as $key => $row) {
+                    if($key >= 0)
+                        $str .= " "; 
+                    if(is_array($user)) {
+                        $str.= $user[$row];
+                    } else {
+                        $str .= $user->$row;
+                    }
+                }
+                return trim($str);
+            } else {
+                if(is_array($user))
+                    return $user[$prop];
+                if(is_object($user))
+                    return $user->$prop;  
+            }
+
+                      
         } 
 
         return $user ?? '';

@@ -1,23 +1,65 @@
-<?php 
+<?php
 
+	use Classes\Report\SalesReport;
+	load(['SalesReport'],CLASSES.DS.'Report');
 	class ReportController extends Controller
 	{
 
 		public function __construct()
 		{
-			
+			parent::__construct();
+			$this->orderItemModel = model('OrderItemModel');
 		}
 
 		public function salesReport() {
 
+			$salesReport = new SalesReport();
+
+			$saleItems = $this->orderItemModel->getItemsByParam();
+			$highestSellingInQuantity = $this->orderItemModel->getLowestOrHighest(
+				null, OrderItemModel::CATEGORY_QUANTITY,'desc'
+			);
+			$lowestSellingInQuantity = $this->orderItemModel->getLowestOrHighest(
+				null, OrderItemModel::CATEGORY_QUANTITY,'asc'
+			);
+			$highestSellingInAmount = $this->orderItemModel->getLowestOrHighest(
+				null, OrderItemModel::CATEGORY_AMOUNT,'desc'
+			);
+			$lowestSellingInAmount = $this->orderItemModel->getLowestOrHighest(
+				null, OrderItemModel::CATEGORY_AMOUNT,'asc'
+			);
+
+			$salesReport->setItems($saleItems);
+			$salesSummary = $salesReport->getSummary();
+
+			$this->data['page_title'] = 'Sales Report';
+
+			$this->data['reportData'] = [
+				'saleItems' => $saleItems,
+				'highestSellingInQuantity' => $highestSellingInQuantity,
+				'lowestSellingInQuantity' => $lowestSellingInQuantity,
+				'highestSellingInAmount' => $highestSellingInAmount,
+				'lowestSellingInAmount' => $lowestSellingInAmount,
+				'salesSummary' => $salesSummary,
+				'today' => now(),
+				'user'  => whoIs(['firstname','lastname'])
+			];
+			return $this->view('report/sales_report', $this->data);
 		}
 
 		public function stocksReport() {
-
+			$this->data['page_title'] = 'Sales Report';
+			return $this->view('report/stock_report', $this->data);
 		}
 
 		public function pettyCashReport() {
+			$this->data['page_title'] = 'Petty Cash Report';
+			return $this->view('report/petty_cash', $this->data);
+		}
 
+		public function ledgerReport() {
+			$this->data['page_title'] = 'Petty Cash Report';
+			return $this->view('report/ledger_report', $this->data);
 		}
 		
 
