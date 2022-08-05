@@ -165,6 +165,23 @@
 		'phyical-examination' => $controller. '/phyicalExamination'
 	];
 
+	$controller = '/ReportController';
+	$routes['report'] = [
+		'index' => $controller.'/index',
+		'sales' => $controller.'/salesReport',
+		'stocks' => $controller.'/stocksReport',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'download' => $controller.'/download',
+		'show'   => $controller.'/show',
+		'live'   => $controller.'/live',
+		'new'    => $controller.'/new',
+		'serve'  => $controller.'/serve',
+		'skip'   => $controller.'/skip',
+		'complete' => $controller.'/complete',
+		'reset'   => $controller.'/reset'
+	];
+
 	
 	$controller = '/QueueController';
 	$routes['queue'] = [

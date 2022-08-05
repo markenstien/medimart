@@ -1,6 +1,8 @@
 <?php
 	use Form\AttachmentForm;
-	load(['AttachmentForm'] , APPROOT.DS.'form');
+	use Form\FormCommon;
+
+	load(['AttachmentForm','FormCommon'] , APPROOT.DS.'form');
 	class Controller
 	{	
 
@@ -16,8 +18,11 @@
 				$this->_attachmentModel = model('AttachmentModel'); 
 			}
 
+			$this->_formCommon = new FormCommon();
+
 			$this->data = [];
 			$this->data['whoIs'] = whoIs();
+			$this->data['_formCommon'] = $this->_formCommon;
 			$user = whoIs(); 
 			if($user && isEqual($user->user_type , 'admin'))
 				$this->is_admin = true;

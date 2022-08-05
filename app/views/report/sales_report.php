@@ -3,12 +3,17 @@
         <div class="card-header">
             <h4 class="card-title">Sales Report</h4>
         </div>
+        <?php if(isset($isSummarized)) :?>
         <div class="card-body">
             <div class="col-md-7">
                 <div class="report_container">    
                     <section class="header">
                         <div class="text-center">
                             <h4>SALES REPORT</h4>
+                            <div>Report Period : <?php echo $request['start_date']?> TO <?php echo $request['end_date']?></div>
+                            <?php if(!is_null($user)) :?>
+                                <div>For User : <?php echo $user->firstname . ' '.$user->lastname?></div>
+                            <?php endif?>
                             <div><small>AS of <?php echo $reportData['today']?></small></div>
                             <div>Report By : <small><strong><?php echo $reportData['user']?></strong></small></div>
                         </div>
@@ -106,6 +111,25 @@
             </div>
 
         </div>
+
+        <?php else:?>
+
+        <div class="card-body">
+            <div class="col-md-5">
+                <?php
+                    Form::open([
+                        'method' => 'get',
+                        'action' => ''
+                    ])
+                ?>
+                    <?php echo $_formCommon->getRow('start_date')?>
+                    <?php echo $_formCommon->getRow('end_date')?>
+                    <?php echo $_formCommon->getRow('user_id')?>
+                    <?php echo $_formCommon->get('submit')?>
+                <?php Form::close()?>
+            </div>
+        </div>
+        <?php endif?>
     </div>
 <?php endbuild()?>
 <?php loadTo()?>

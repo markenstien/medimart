@@ -27,15 +27,9 @@
 
  		public function __construct()
  		{
-
  			$this->db = new Database(DBVENDOR , DBHOST , DBNAME , DBUSER , DBPASS);
-
-
  			$this->dbHelper = new DatabaseHelper( Database::getInstance() );
-
-
  			$this->prefix  = DB_PREFIX;
-
  			$this->token = new Token();
 		 }
 
@@ -345,13 +339,13 @@
 					{
 						$conditionKeySign = '=';
 
-						if( isEqual($condition , 'not equal') )
+						if(isEqual($condition , 'not equal'))
 							$conditionKeySign = '!=';
 
-						if( isEqual( $condition , 'in'))
+						if(isEqual( $condition , 'in'))
 							$conditionKeySign = ' IN ';
 
-						if( is_array($condition_values) )
+						if(is_array($condition_values))
 						{
 							$WHERE .= "{$key} $conditionKeySign ('".implode("','",$condition_values)."') ";
 							// $WHERE .= "{$key} {$conditionKeySign} '".implode("','",$condition_values)."'";
@@ -378,10 +372,9 @@
 
 				if( isEqual($defaultCondition , 'like')) 
 					$WHERE .= " $key {$defaultCondition} '%{$param_value}%'";
-
 				if( isEqual($defaultCondition , '=')) 
 				{
-					$isNotCondition = substr( $param_value , 0 ,1); //get exlamation
+					$isNotCondition = substr($param_value, 0 ,1); //get exlamation
 					$isNotCondition = stripos($isNotCondition , '!');
 
 					if( $isNotCondition === FALSE )

@@ -198,9 +198,7 @@
          * sort :: asc,desc
          */
         public function getLowestOrHighest($params = [], $category = null, $sort = null) {
-
             $where = null;
-
             if (isset($params['where'])) {
                 $where = " WHERE ".parent::conditionConvert($params['where']);
             }

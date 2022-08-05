@@ -3,6 +3,23 @@
         <div class="card-header">
             <h4 class="card-title">Sales Report</h4>
         </div>
+
+        <div class="card-body">
+            <div class="col-md-5">
+                <?php
+                    Form::open([
+                        'method' => 'get',
+                        'action' => ''
+                    ])
+                ?>
+                    <?php echo $_formCommon->getRow('start_date')?>
+                    <?php echo $_formCommon->getRow('end_date')?>
+                    <?php echo $_formCommon->getRow('user_id')?>
+                    <?php echo $_formCommon->get('submit')?>
+                <?php Form::close()?>
+            </div>
+        </div>
+        
         <div class="card-body">
             <div class="col-md-7">
                 <div class="report_container">    

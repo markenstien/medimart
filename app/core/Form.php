@@ -368,18 +368,19 @@
 		}
 
 
+		public function setOptionValues($name, $optionValues = []) {
+			$this->_items[$name]['option_values'] = $optionValues;
+		}
+
 		public function setValueObject($object)
 		{
 			$items = $this->_items;
-			foreach($items as $key => $item) 
-			{
+			foreach ($items as $key => $item) {
 				$name = trim($item['name']);//column_name equivalent
 				if(isset($object->$name))
 					$items[$key]['value'] = $object->$name;
 			}
-
 			$this->_items = $items;
-
 			return $items;
 		}
 
