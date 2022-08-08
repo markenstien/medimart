@@ -10,6 +10,8 @@
                         <th>#</th>
                         <th>Sku</th>
                         <th>Name</th>
+                        <th>Min</th>
+                        <th>Max</th>
                         <th>Stocks</th>
                         <th>Stock Level</th>
                         <th>Action</th>
@@ -21,6 +23,8 @@
                                 <td><?php echo ++$key?></td>
                                 <td><?php echo $row->sku?></td>
                                 <td><?php echo $row->name?></td>
+                                <td><?php echo $row->min_stock?></td>
+                                <td><?php echo $row->max_stock?></td>
                                 <td><?php echo $row->total_stock?></td>
                                 <td><?php echo $row->stock_level?></td>
                                 <td>

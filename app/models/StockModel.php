@@ -61,19 +61,26 @@
         }
 
         public function getStocks($params = []) {
+            $dateRange = null;
+            if(isset($params['where']['date'])) {
+                $dateRange = " WHERE ".parent::conditionConvert([
+                    'date' => $params['where']['date']
+                ]);
+            }
+
             $this->db->query(
-                "SELECT item.* , stock.total_stock,
+                "SELECT item.* , ifnull(stock.total_stock,0) as total_stock,
                     CASE
-                        WHEN stock.total_stock <= item.min_stock
+                        WHEN ifnull(stock.total_stock,0) <= item.min_stock
                             THEN 'LOW STOCK LEVEL'
-                        WHEN stock.total_stock >= item.max_stock
+                        WHEN ifnull(stock.total_stock,0) >= item.max_stock
                             THEN 'HIGH STOCK LEVEL'
                         ELSE 'NORMAL STOCK LEVEL'
                     END AS stock_level
                 FROM items as item
                 LEFT JOIN (
                     SELECT ifnull(sum(quantity),0) as total_stock, item_id
-                        FROM stocks
+                        FROM stocks {$dateRange}
                         GROUP BY item_id
                 ) as stock
                 ON stock.item_id = item.id
@@ -81,5 +88,87 @@
             );
 
             return $this->db->resultSet();
+        }
+
+        public function getHighestStock($params = []) {
+            $where = null;
+            $dateRange = null;
+            $limit = isset($params['limit']) ? " LIMIT {$params['limit']}" : null;
+
+            switch($params['type']) {
+                case StockService::HIGHEST_BY_MAX_QUANTITY:
+                case StockService::LOWEST_BY_MAX_QUANTITY:
+                    $order = $params['type'] == StockService::HIGHEST_BY_MAX_QUANTITY ? ' desc ' : 'asc';
+                    if(isset($params['where'])) {
+                        $where['stock.total_stock'] = [
+                            'condition' => '>',
+                            'value' => 'item.max_stock',
+                            'concatinator' => 'AND',
+                            'is_field' => true
+                        ];
+
+                        if(isset($params['where']['date'])) {
+                            $dateRange = " WHERE ".parent::conditionConvert($params['where']);
+                        }
+                    }
+                    $where = " WHERE " .parent::conditionConvert($where);
+                    $sql = "
+                    SELECT item.* , ifnull(stock.total_stock,0) as total_stock,
+                        (item.max_stock - ifnull(total_stock,0)) as order_total,
+                        CASE
+                            WHEN ifnull(stock.total_stock,0) <= item.min_stock
+                                THEN 'LOW STOCK LEVEL'
+                            WHEN ifnull(stock.total_stock,0) > item.max_stock
+                                THEN 'HIGH STOCK LEVEL'
+                            ELSE 'NORMAL STOCK LEVEL'
+                        END AS stock_level
+                    FROM items as item
+                    LEFT JOIN (
+                        SELECT ifnull(sum(quantity),0) as total_stock, item_id
+                            FROM stocks {$dateRange}
+                            GROUP BY item_id
+                    ) as stock
+                    ON stock.item_id = item.id
+                    {$where}
+                    ORDER BY (ifnull(stock.total_stock,0) - item.max_stock) {$order}
+                    {$limit}
+                    ";
+                    $this->db->query($sql);
+                    return $this->db->resultSet();
+
+                break;
+
+
+                case StockService::LOWEST_QUANTITY:
+                case StockService::HIGHEST_QUANTITY:
+                    $order = $params['type'] == StockService::HIGHEST_QUANTITY ? ' desc ' : 'asc';
+                    if(isset($params['where']['date'])) {
+                        $dateRange = " WHERE ".parent::conditionConvert($params['where']);
+                    }
+                    $sql = "
+                        SELECT item.* , ifnull(stock.total_stock,0) as total_stock,
+                            (item.max_stock - ifnull(total_stock,0)) as order_total,
+                            CASE
+                                WHEN ifnull(stock.total_stock,0) <= item.min_stock
+                                    THEN 'LOW STOCK LEVEL'
+                                WHEN ifnull(stock.total_stock,0)> item.max_stock
+                                    THEN 'HIGH STOCK LEVEL'
+                                ELSE 'NORMAL STOCK LEVEL'
+                            END AS stock_level
+                        FROM items as item
+                        LEFT JOIN (
+                            SELECT ifnull(sum(quantity),0) as total_stock, item_id
+                                FROM stocks {$dateRange}
+                                GROUP BY item_id
+                        ) as stock
+                        ON stock.item_id = item.id
+                        {$where}
+                        ORDER BY stock.total_stock {$order}
+                        {$limit}
+                        ";
+                        $this->db->query($sql);
+                    return $this->db->resultSet();
+                break;
+            }
         }
     }

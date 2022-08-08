@@ -1,7 +1,11 @@
 <?php
 
 	use Classes\Report\SalesReport;
+	use Services\StockService;
+
 	load(['SalesReport'],CLASSES.DS.'Report');
+	load(['StockService'],SERVICES);
+
 	class ReportController extends Controller
 	{
 
@@ -11,6 +15,7 @@
 			$this->orderItemModel = model('OrderItemModel');
 			$this->orderModel = model('OrderModel');
 			$this->userModel = model('UserModel');
+			$this->stockModel = model('StockModel');
 		}
 
 		public function salesReport() {
@@ -98,7 +103,78 @@
 		}
 
 		public function stocksReport() {
+			$request = request()->inputs();
+
+			if (isset($request['submit'])) {
+				$stockService = new StockService();
+				$highestStockByMaxQuantity = $this->stockModel->getHighestStock([
+					'type' => $stockService::HIGHEST_BY_MAX_QUANTITY,
+					'where' => [
+						'date' => [
+							'condition' => 'between',
+							'value' => [$request['start_date'], $request['end_date']]
+						]
+					],
+					'limit' => 6
+				]);
+
+				$lowestStockByMaxQuantity = $this->stockModel->getHighestStock([
+					'type' => $stockService::LOWEST_BY_MAX_QUANTITY,
+					'where' => [
+						'date' => [
+							'condition' => 'between',
+							'value' => [$request['start_date'], $request['end_date']]
+						]
+					],
+					'limit' => 6
+				]);
+
+				$highestStockByQuantity = $this->stockModel->getHighestStock([
+					'type' => $stockService::HIGHEST_QUANTITY,
+					'where' => [
+						'date' => [
+							'condition' => 'between',
+							'value' => [$request['start_date'], $request['end_date']]
+						]
+					],
+					'limit' => 6
+				]);
+				
+				$lowestStockByQuantity = $this->stockModel->getHighestStock([
+					'type' => $stockService::LOWEST_QUANTITY,
+					'where' => [
+						'date' => [
+							'condition' => 'between',
+							'value' => [$request['start_date'], $request['end_date']]
+						]
+					],
+					'limit' => 6
+				]);
+				
+				$stocks = $this->stockModel->getStocks([
+					'where' => [
+						'date' => [
+							'condition' => 'between',
+							'value' => [$request['start_date'], $request['end_date']]
+						]
+					],
+				]);
+				$this->data['reportData'] = [
+					'highestStockByMaxQuantity' => $highestStockByMaxQuantity,
+					'highestStockByQuantity'    => $highestStockByQuantity,
+					'lowestStockByMaxQuantity' => $lowestStockByMaxQuantity,
+					'lowestStockByQuantity'    => $lowestStockByQuantity,
+					'stocks' => $stocks,
+					'displayname' => whoIs(['firstname','lastname']),
+					'username' => whoIs('username'),
+					'dateNow' => now()
+				];
+
+			}
+
 			$this->data['page_title'] = 'Sales Report';
+			$this->data['request'] = $request;
+
 			return $this->view('report/stock_report', $this->data);
 		}
 

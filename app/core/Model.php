@@ -289,113 +289,129 @@
 	}
 
 	public function conditionConvert($params , $defaultCondition = '=')
-		{
-			$WHERE = '';
-			$counter = 0;
+	{
+		$WHERE = '';
+		$counter = 0;
 
-			$errors = [];
+		$errors = [];
 
-			if( !is_array($params) )
-				return $params;
-			/*
-			*convert-where default concatinator is and
-			*add concat on param values to use it
-			*/
-			$condition_operation_concatinator = 'AND';
 
-			foreach($params as $key => $param_value) 
-			{	
-				if( $counter > 0)
-					$WHERE .= " {$condition_operation_concatinator} "; //add space
+		if( !is_array($params) )
+			return $params;
+		/*
+		*convert-where default concatinator is and
+		*add concat on param values to use it
+		*/
+		$condition_operation_concatinator = 'AND';
 
-				/*should have a condition*/
-				if( is_array($param_value) && isset($param_value['condition']) ) 
+		foreach($params as $key => $param_value) 
+		{	
+			if( $counter > 0)
+				$WHERE .= " {$condition_operation_concatinator} "; //add space
+
+			/*should have a condition*/
+			if( is_array($param_value) && isset($param_value['condition']) ) 
+			{
+				$has_condition = false;
+
+				$condition_operation_concatinator = $param_value['concatinator'] ?? $condition_operation_concatinator;
+
+				//check for what condition operation
+				$condition = $param_value['condition'];
+				$condition_values = $param_value['value'] ?? '';
+				$isField = isset($param_value['is_field']) ? true : false;
+
+				if( isEqual($condition , 'not null'))
 				{
-					$condition_operation_concatinator = $param_value['concatinator'] ?? $condition_operation_concatinator;
-
-					//check for what condition operation
-					$condition = $param_value['condition'];
-					$condition_values = $param_value['value'] ?? '';
-
-					if( isEqual($condition , ['between' , 'not between']))
-					{
-						if( !is_array($condition_values) )
-							return _error(["Invalid query" , $params]);
-						if( count($condition_values) < 2 )
-							return _error("Incorrect between condition");
-
-						$condition = strtoupper($condition);
-
-						list($valueA, $valueB) = $condition_values;
-							$WHERE .= " {$key} {$condition} '{$valueA}' AND '{$valueB}'";
-					}
-
-					if( isEqual( $condition , 'not null') )
-					{
-						$WHERE .= "{$key} is not null ";
-					}
-
-					if( isEqual($condition , ['equal' , 'not equal' , 'in']) )
-					{
-						$conditionKeySign = '=';
-
-						if(isEqual($condition , 'not equal'))
-							$conditionKeySign = '!=';
-
-						if(isEqual( $condition , 'in'))
-							$conditionKeySign = ' IN ';
-
-						if(is_array($condition_values))
-						{
-							$WHERE .= "{$key} $conditionKeySign ('".implode("','",$condition_values)."') ";
-							// $WHERE .= "{$key} {$conditionKeySign} '".implode("','",$condition_values)."'";
-						}else
-						{
-							$WHERE .= "{$key} {$conditionKeySign} '{$condition_values}' ";
-						}
-					}
-
-					/*
-					*if using like
-					*add '%' on value 
-					*/
-					if( isEqual($condition , 'like') )
-					{
-						$conditionKeySign = 'like';
-						$WHERE .= "{$key} {$conditionKeySign} '{$condition_values}'";
-					}
-
-					$counter++;
-
-					continue;
+					$WHERE .= "{$key} IS NOT NULL ";
+					$has_condition = true;
 				}
 
-				if( isEqual($defaultCondition , 'like')) 
-					$WHERE .= " $key {$defaultCondition} '%{$param_value}%'";
-				if( isEqual($defaultCondition , '=')) 
+				if( isEqual($condition , ['between' , 'not between']))
 				{
-					$isNotCondition = substr($param_value, 0 ,1); //get exlamation
-					$isNotCondition = stripos($isNotCondition , '!');
+					if( !is_array($condition_values) )
+						return _error(["Invalid query" , $params]);
+					if( count($condition_values) < 2 )
+						return _error("Incorrect between condition");
 
-					if( $isNotCondition === FALSE )
-					{
-						$WHERE .= " $key = '{$param_value}'";
+					$condition = strtoupper($condition);
+
+					list($valueA, $valueB) = $condition_values;
+					if($isField) {
+						$WHERE .= " {$key} {$condition} {$valueA} AND {$valueB}";
 					}else{
-						
-						$cleanRow = substr($param_value , 1);
-
-						$WHERE .= " $key != '{$cleanRow}'";
+						$WHERE .= " {$key} {$condition} '{$valueA}' AND '{$valueB}'";
 					}
+
+					$has_condition = true;
 				}
 
+				if( isEqual($condition , ['equal' , 'not equal' , 'in' , 'not in']) )
+				{
+					$conditionKeySign = '=';
+
+					if( isEqual($condition , 'not equal') )
+						$conditionKeySign = '!=';
+
+					if( isEqual( $condition , 'in'))
+						$conditionKeySign = ' IN ';
+
+					if( isEqual( $condition , 'not in'))
+						$conditionKeySign = ' NOT IN ';
+
+					if( is_array($condition_values) ){
+						if($isField) {
+							$WHERE .= "{$key} $conditionKeySign (".implode(",",$condition_values).") ";
+						}else{
+							$WHERE .= "{$key} $conditionKeySign ('".implode("','",$condition_values)."') ";
+						}
+					}else{
+						$WHERE .= "{$key} {$conditionKeySign} '{$condition_values}' ";
+					}
+
+					$has_condition = true;
+				}
+
+				/*
+				*if using like
+				*add '%' on value 
+				*/
+				if(isEqual($condition , ['>' , '>=' , '<' , '<=' , '=', 'like']) )
+				{
+					if($isField){
+						$WHERE .= "{$key} {$condition} {$condition_values}";
+					}else{
+						$WHERE .= "{$key} {$condition} '{$condition_values}'";
+					}
+				}
 				$counter++;
+
+				continue;
 			}
 
-			// dump($WHERE);
+			if( isEqual($defaultCondition , 'like')) 
+				$WHERE .= " $key {$defaultCondition} '%{$param_value}%'";
 
+			if( isEqual($defaultCondition , '=')) 
+			{
+				$isNotCondition = substr( $param_value , 0 ,1); //get exlamation
+				$isNotCondition = stripos($isNotCondition , '!');
 
-			return $WHERE;
+				if( $isNotCondition === FALSE )
+				{
+					$WHERE .= " $key = '{$param_value}'";
+				}else{
+					
+					$cleanRow = substr($param_value , 1);
+					$WHERE .= " $key != '{$cleanRow}'";
+				}
+			}
+
+			$counter++;
 		}
+
+		return $WHERE;
+	}
 		
 
 

@@ -112,4 +112,12 @@
             FROM stocks 
             GROUP BY item_id";
         }
+
+        public function totalItem() {
+            $this->db->query(
+                "SELECT count(id) as total_item
+                    FROM {$this->table}"
+            );
+            return $this->db->single()->total_item ?? 0;
+        }
     }

@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+	use Services\UserService;
+	load(['UserService'], SERVICES);
 
 	class UserModel extends Model
 	{
@@ -285,6 +288,17 @@
 		public function getPatients()
 		{
 			
+		}
+
+		public function totalUser(){
+			$staff = [UserService::STAFF, UserService::SUPERVISOR];
+
+			$this->db->query(
+				"SELECT count(id) as total
+					FROM {$this->table}
+					WHERE user_type in ('".implode("','", $staff)."') "
+			);
+			return $this->db->single()->total ?? 0;
 		}
 
 		public function getSummary()
